@@ -14,7 +14,7 @@ DATABASE_URL = os.getenv(
 
 "DATABASE_URL",
 
-
+"postgresql://zeynep:0bZZUwTFDFNoUjJxyMPPJWFaiY6HoCMV@dpg-d3tjfg1r0fns73ahsbtg-a.oregon-postgres.render.com/hellocloud2_db"
 
 )
 
