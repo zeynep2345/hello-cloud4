@@ -22,40 +22,31 @@ HTML = """
     <h1>Mikro Hizmetli Selam!</h1>
     <p>Adını yaz</p>
     <form method="POST">
-        <input type="text" name="isim" placeholder="Adını yaz" required>
+      <input type="text" name="isim" placeholder="Adını yaz" required>
         <button type="submit">Gönder</button>
     </form>
 
     <h3>Ziyaretçiler:</h3>
     <ul>
-        {% for ad in isimler %}
-            <li>{{ ad }}</li>
-        {% endfor %}
+       {% for ad in isimler %}
+         <li>{{ ad }}</li>
+       {% endfor %}
     </ul>
-</body>
-</html>
-"""
+   </body>
+   </html>
+   """
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
         isim = request.form.get("isim")
         if isim:
-            # İsmi API'ye gönder
-            requests.post(API_URL + "/ziyaretciler", json={"isim": isim})
+        requests.post(API_URL + "/ziyaretciler", json={"isim": isim})
         return redirect("/")
 
-    # API'den isimleri çek
-    try:
         resp = requests.get(API_URL + "/ziyaretciler")
-        if resp.status_code == 200:
-            isimler = resp.json()
-        else:
-            isimler = []
-    except Exception:
-        isimler = []
+        isimler = resp.json() if resp.status_code == 200 else []
+        return render_template_string(HTML, isimler=isimler)
 
-    return render_template_string(HTML, isimler=isimler)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    if __name__ == "__main__":
+        app.run(host="0.0.0.0", port=5000)
